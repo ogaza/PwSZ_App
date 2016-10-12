@@ -6,6 +6,7 @@
 package mojbudzet;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +24,17 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
         
-        KategoriaRepo.pobierzWszystkie();
+        // KategoriaRepo.pobierzWszystkie();
+        
+        Repo repo = new Repo();
+        repo.listEvents();
+        
+        
+        // make app close on x button
+        stage.setOnCloseRequest(e -> {
+        Platform.exit();
+        System.exit(0);
+    });
     }
 
     /**
