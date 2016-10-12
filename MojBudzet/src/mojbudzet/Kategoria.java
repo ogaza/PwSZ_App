@@ -1,23 +1,22 @@
+package mojbudzet;
 
-package mojbudzet.encje;
-import mojbudzet.interfejsy.IKategoria;
-
-public class Kategoria implements IKategoria {
+public class Kategoria {
 
     private int id;
     private String nazwa;
     
-    @Override
     public int getId() {
         return this.id;
     }
 
-    @Override
+    public void setId( int id ) {
+      this.id = id;
+   }
+    
     public String getNazwa() {
         return this.nazwa;
     }
 
-    @Override
     public void setNazwa(String nazwa) {
         this.nazwa = nazwa;
     }

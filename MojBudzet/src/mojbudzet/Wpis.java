@@ -3,40 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mojbudzet.encje;
+package mojbudzet;
 
-import mojbudzet.interfejsy.IKategoria;
-import mojbudzet.interfejsy.IWpis;
-
-
-public class Wpis implements IWpis {
+public class Wpis {
 
     private int id;
     private byte type;
-    IKategoria kategoria;
+    Kategoria kategoria;
     
-    @Override
     public int getId() {
         return this.id;
     }
 
-    @Override
     public byte getType() {
         return this.type;
     }
 
-    @Override
     public void setType(byte type) {
         this.type = type;
     }
 
-    @Override
-    public IKategoria getKategoria() {
+    public Kategoria getKategoria() {
         return this.kategoria;
     }
 
-    @Override
-    public void setKategoria(IKategoria kategoria) {
+    public void setKategoria(Kategoria kategoria) {
         this.kategoria = kategoria;
     }
     
