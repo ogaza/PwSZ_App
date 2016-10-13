@@ -14,9 +14,9 @@ import org.hibernate.Transaction;
 
 public class Repozytorium {
 
-    public List pobierzKategorie() {
+    public List<Kategoria> pobierzKategorie() {
 
-        List result = new ArrayList();
+        List<Kategoria> result = new ArrayList<>();
 
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -58,6 +58,25 @@ public class Repozytorium {
             session.close();
         }
         return id;
+    }
+
+    public void usunKategorie(int id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Kategoria kategoria
+                    = (Kategoria) session.get(Kategoria.class, id);
+            session.delete(kategoria);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
     }
 
     public int dodajKategorie(Kategoria kategoria) {
@@ -134,5 +153,24 @@ public class Repozytorium {
             session.close();
         }
         return id;
+    }
+    
+    public void usunWpis(int id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Wpis wpis
+                    = (Wpis) session.get(Wpis.class, id);
+            session.delete(wpis);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
     }
 }

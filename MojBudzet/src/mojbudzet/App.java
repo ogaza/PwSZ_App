@@ -8,12 +8,15 @@ package mojbudzet;
 //import java.util.Date;
 //import java.util.List;
 //import mojbudzet.repozytoria.Repozytorium;
+import java.util.List;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import mojbudzet.encje.Kategoria;
+import mojbudzet.repozytoria.Repozytorium;
 //import mojbudzet.encje.*;
 
 public class App extends Application {
@@ -33,6 +36,22 @@ public class App extends Application {
             System.exit(0);
         });
 
+//        Repozytorium repo = new Repozytorium();
+//
+//        Kategoria kat1 = new Kategoria("kategoria 1");
+//        repo.dodajKategorie(kat1);
+//
+//        Kategoria kat2 = new Kategoria("kategoria 2");
+//        repo.dodajKategorie(kat2);
+//
+//        List<Kategoria> kategorie = repo.pobierzKategorie();
+//
+//        repo.usunKategorie(kat1.getId());
+//
+//        kategorie = repo.pobierzKategorie();
+//
+//        int x = 0;
+
 //        Kategoria  kategoria = new Kategoria("kategoria 1");                
 //        Wpis wpis = new Wpis((byte)-1 , 1.0, new Date(), kategoria);
 //        
@@ -43,7 +62,6 @@ public class App extends Application {
 //        
 //        List<Wpis> lista = repo.pobierzWpisy();
 //        Kategoria kat  = lista.get(0).getKategoria();       
-               
         // nie zadziala, nie ma my sesji => rozw trzeba ustawic lazy na false        
         //String nazwa = kat.getNazwa();                
         //int y = 0;
