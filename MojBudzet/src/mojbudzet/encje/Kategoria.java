@@ -1,4 +1,4 @@
-package mojbudzet;
+package mojbudzet.encje;
 
 public class Kategoria {
 

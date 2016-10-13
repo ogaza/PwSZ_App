@@ -5,6 +5,7 @@
  */
 package mojbudzet;
 
+import mojbudzet.repozytoria.KategoriaHibernateRepo;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +27,7 @@ public class App extends Application {
         
         // KategoriaRepo.pobierzWszystkie();
         
-        Repo repo = new Repo();
+        KategoriaHibernateRepo repo = new KategoriaHibernateRepo();
         repo.listEvents();
         
         
