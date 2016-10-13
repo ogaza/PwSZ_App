@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="mojbudzet.encje.Wpis" table="wpis">
+        <id column="id" name="id" type="int">
+            <generator class="native"/>
+        </id>
+        <property column="typ" name="typ" type="byte"/>
+        <property column="wartosc" name="wartosc" type="double"/>
+        <property column="data" name="data" type="date"/>
+        <many-to-one name="kategoria" column="kategoriaId" fetch="join" lazy="false" class="mojbudzet.encje.Kategoria" not-null="true"/>
+    </class>
+    <!-- 
+    <class name="mojbudzet.encje.Kategoria" table="kategoria">
+      <id column="id" name="id" type="int">
+        <generator class="native"/>
+      </id>
+      <property column="nazwa" name="nazwa" type="string"/>
+    </class>
+    -->
+</hibernate-mapping>

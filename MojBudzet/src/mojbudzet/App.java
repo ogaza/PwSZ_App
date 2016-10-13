@@ -5,16 +5,18 @@
  */
 package mojbudzet;
 
-import mojbudzet.repozytoria.KategoriaHibernateRepo;
+//import java.util.Date;
+//import java.util.List;
+//import mojbudzet.repozytoria.Repozytorium;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+//import mojbudzet.encje.*;
 
 public class App extends Application {
-
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -24,18 +26,27 @@ public class App extends Application {
 
         stage.setScene(scene);
         stage.show();
-        
-        // KategoriaRepo.pobierzWszystkie();
-        
-        KategoriaHibernateRepo repo = new KategoriaHibernateRepo();
-        repo.listEvents();
-        
-        
+
         // make app close on x button
         stage.setOnCloseRequest(e -> {
-        Platform.exit();
-        System.exit(0);
-    });
+            Platform.exit();
+            System.exit(0);
+        });
+
+//        Kategoria  kategoria = new Kategoria("kategoria 1");                
+//        Wpis wpis = new Wpis((byte)-1 , 1.0, new Date(), kategoria);
+//        
+//        Repozytorium repo = new Repozytorium();
+//        
+//        repo.dodajKategorie(kategoria);        
+//        repo.dodajWpis(wpis);
+//        
+//        List<Wpis> lista = repo.pobierzWpisy();
+//        Kategoria kat  = lista.get(0).getKategoria();       
+               
+        // nie zadziala, nie ma my sesji => rozw trzeba ustawic lazy na false        
+        //String nazwa = kat.getNazwa();                
+        //int y = 0;
     }
 
     /**
