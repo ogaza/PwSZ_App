@@ -5,9 +5,8 @@
  */
 package mojbudzet;
 
-//import java.util.Date;
-//import java.util.List;
-//import mojbudzet.repozytoria.Repozytorium;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -15,9 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import mojbudzet.encje.Kategoria;
+import mojbudzet.encje.*;
 import mojbudzet.repozytoria.Repozytorium;
-//import mojbudzet.encje.*;
 
 public class App extends Application {
 
@@ -35,37 +33,79 @@ public class App extends Application {
             Platform.exit();
             System.exit(0);
         });
-
-//        Repozytorium repo = new Repozytorium();
-//
-//        Kategoria kat1 = new Kategoria("kategoria 1");
-//        repo.dodajKategorie(kat1);
-//
-//        Kategoria kat2 = new Kategoria("kategoria 2");
-//        repo.dodajKategorie(kat2);
-//
-//        List<Kategoria> kategorie = repo.pobierzKategorie();
-//
-//        repo.usunKategorie(kat1.getId());
-//
-//        kategorie = repo.pobierzKategorie();
-//
-//        int x = 0;
-
-//        Kategoria  kategoria = new Kategoria("kategoria 1");                
-//        Wpis wpis = new Wpis((byte)-1 , 1.0, new Date(), kategoria);
-//        
-//        Repozytorium repo = new Repozytorium();
-//        
-//        repo.dodajKategorie(kategoria);        
-//        repo.dodajWpis(wpis);
-//        
-//        List<Wpis> lista = repo.pobierzWpisy();
-//        Kategoria kat  = lista.get(0).getKategoria();       
-        // nie zadziala, nie ma my sesji => rozw trzeba ustawic lazy na false        
-        //String nazwa = kat.getNazwa();                
-        //int y = 0;
+        
+        List<Wpis> lista = sprawdzDlaKategorii();
+        
+        int x = 0;
     }
+
+    private List<Wpis> sprawdzDlaDat() throws Exception {
+        Repozytorium repo = new Repozytorium();
+
+        Kategoria kat1 = new Kategoria("kategoria 1");
+        repo.dodajKategorie(kat1);
+
+        Kategoria kat2 = new Kategoria("kategoria 2");
+        repo.dodajKategorie(kat2);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        date = format.parse("2016-01-11");
+
+        Wpis wpis = new Wpis((byte) -1, 1.0, date, kat1);
+
+        repo.dodajWpis(wpis);
+
+        date = format.parse("2016-10-13");
+
+        wpis = new Wpis((byte) -1, 1.0, date, kat2);
+
+        repo.dodajWpis(wpis);
+
+        List<Wpis> lista = repo.
+                pobierzWpisyDlaOkresu(
+                        format.parse("2010-10-13"),
+                        format.parse("2016-10-13"));
+
+        return lista;
+    }
+
+    private List<Wpis> sprawdzDlaKategorii() throws Exception {
+        Repozytorium repo = new Repozytorium();
+
+        Kategoria kat1 = new Kategoria("kategoria 1");
+        repo.dodajKategorie(kat1);
+
+        Kategoria kat2 = new Kategoria("kategoria 2");
+        repo.dodajKategorie(kat2);
+
+        Wpis wpis = new Wpis((byte) -1, 1.0, new Date(), kat1);
+
+        repo.dodajWpis(wpis);
+
+        wpis = new Wpis((byte) -1, 1.0, new Date(), kat2);
+
+        repo.dodajWpis(wpis);
+
+        List<Wpis> lista = repo.pobierzWpisyDlaKategorii(kat2);
+
+        return lista;
+    }
+    
+    private List<Kategoria> sprawdzPobieranieKategorii() {
+        
+        Repozytorium repo = new Repozytorium();
+
+        Kategoria kat1 = new Kategoria("kategoria 1");
+        repo.dodajKategorie(kat1);
+        
+        Kategoria kat2 = new Kategoria("kategoria 2");
+        repo.dodajKategorie(kat2);
+        
+        List<Kategoria> kategorie = repo.pobierzKategorie();
+        
+        return kategorie;
+    } 
 
     /**
      * @param args the command line arguments

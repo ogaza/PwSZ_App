@@ -6,9 +6,11 @@
 package mojbudzet.repozytoria;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import mojbudzet.encje.Kategoria;
 import mojbudzet.encje.Wpis;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -135,6 +137,97 @@ public class Repozytorium {
         return result;
     }
 
+    public List<Wpis> pobierzWpisyDlaKategorii(Kategoria kategoria) {
+
+        List<Wpis> result = new ArrayList<>();
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+
+            Query query = session.createQuery("select w from "
+                    + Wpis.class.getName()
+                    + " w where w.kategoria.id = :id");
+
+            query.setInteger("id", kategoria.getId());
+
+            result = query.list();
+            
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+
+        return result;
+    }
+
+    public List<Wpis> pobierzWpisyDlaOkresu(Date start, Date koniec) {
+
+        List<Wpis> result = new ArrayList<>();
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+
+            Query query = session.createQuery("select w from "
+                    + Wpis.class.getName()
+                    + " w where w.data BETWEEN :start and :koniec");
+
+            query.setDate("start", start);
+            query.setDate("koniec", koniec);
+
+            result = query.list();
+            
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+
+        return result;
+    }
+
+    public List<Wpis> pobierzWpisyTypu(byte typ) {
+
+        List<Wpis> result = new ArrayList<>();
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+
+            Query query = session.createQuery("select w from "
+                    + Wpis.class.getName()
+                    + " w where w.typ = :typ");
+
+            query.setByte("typ", typ);
+
+            result = query.list();
+            
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+
+        return result;
+    }
+    
     public int dodajWpis(Wpis wpis) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -154,7 +247,7 @@ public class Repozytorium {
         }
         return id;
     }
-    
+
     public void usunWpis(int id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
