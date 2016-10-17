@@ -101,6 +101,36 @@ public class Repozytorium {
         return id;
     }
 
+    public Wpis pobierzWpis(int id) {
+
+        Wpis result = null;
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+
+            Query query = session.createQuery("select w from "
+                    + Wpis.class.getName()
+                    + " w where w.id = :id");
+
+            query.setInteger("id", id);
+
+            result = (Wpis) query.list().get(0);
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+
+        return result;
+    }
+
     public List<Wpis> pobierzWpisy() {
 
         List<Wpis> result = new ArrayList<>();
@@ -153,7 +183,7 @@ public class Repozytorium {
             query.setInteger("id", kategoria.getId());
 
             result = query.list();
-            
+
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {
@@ -184,7 +214,7 @@ public class Repozytorium {
             query.setDate("koniec", koniec);
 
             result = query.list();
-            
+
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {
@@ -214,7 +244,7 @@ public class Repozytorium {
             query.setByte("typ", typ);
 
             result = query.list();
-            
+
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {
@@ -227,7 +257,7 @@ public class Repozytorium {
 
         return result;
     }
-    
+
     public int dodajWpis(Wpis wpis) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

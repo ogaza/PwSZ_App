@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="233.0" prefWidth="183.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mojbudzet.AddModalController">
+    <children>
+      <Button fx:id="saveBtn" layoutX="19.0" layoutY="194.0" mnemonicParsing="false" onAction="#onSaveBtnClicked" text="Zapisz" />
+      <TextField fx:id="wartoscField" layoutX="18.0" layoutY="26.0" />
+      <Label layoutX="18.0" layoutY="9.0" text="Wartość" />
+      <Label layoutX="19.0" layoutY="84.0" text="Kategoria" />
+      <Label layoutX="19.0" layoutY="135.0" text="Data" />
+      <RadioButton fx:id="rbWydatek" layoutX="17.0" layoutY="60.0" mnemonicParsing="false" selected="true" text="Wydatek">
+         <toggleGroup>
+            <ToggleGroup fx:id="toggleGroup" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="rbPrzychod" layoutX="99.0" layoutY="60.0" mnemonicParsing="false" text="Przychód" toggleGroup="$toggleGroup" />
+      <ChoiceBox fx:id="kategoriaBox" layoutX="18.0" layoutY="101.0" prefWidth="150.0" />
+      <DatePicker fx:id="dataPicker" layoutX="18.0" layoutY="152.0" prefHeight="25.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>
