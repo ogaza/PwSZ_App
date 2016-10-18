@@ -43,7 +43,9 @@ public class FXMLDocumentController implements Initializable {
 
     private final Repozytorium repo = new Repozytorium();
 
-    List<Kategoria> kategorie;
+    private List<Kategoria> kategorie;
+
+    private Kategoria wybranaKategoria;
 
     @FXML
     private void onAddBtnClicked(ActionEvent event) {
@@ -145,19 +147,59 @@ public class FXMLDocumentController implements Initializable {
         wypelnijListeKategorii();
     }
 
+    @FXML
+    private void onListClicked() {
+        Kategoria wybranaKategoria = (Kategoria) listaKategorii.
+                getSelectionModel().getSelectedItem();
+
+        this.wybranaKategoria = wybranaKategoria;
+
+        this.refreshGrid();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         pobierzKategorie();
         wypelnijListeKategorii();
         przygotujKolumny();
         refreshGrid();
+
+//        ChangeListener<Kategoria> kat = new ChangeListener<Kategoria>() {
+//            
+//            public Kategoria selectedKat;
+//            
+//            @Override
+//            public void changed(
+//                    ObservableValue<? extends Kategoria> observable,
+//                    Kategoria oldValue, Kategoria newValue) {
+//                // Your action here
+//                // System.out.println("Selected item: " + newValue.getNazwa());
+//
+//                // Alert alert = new Alert(Alert.AlertType.WARNING, "Wybrales " + newValue.getNazwa());
+//                // alert.showAndWait();
+//                
+//                this.selectedKat = newValue;
+//            }
+//            
+//            Alert alert = new Alert(Alert.AlertType.WARNING, "Wybrales " + newValue.getNazwa());
+//        };
+//
+//        listaKategorii.getSelectionModel().
+//                selectedItemProperty().
+//                addListener(kat);
     }
 
     private void refreshGrid() {
 
         ObservableList<WpisWidok> wpisyObservable = FXCollections.observableArrayList();
 
-        List<Wpis> wpisy = repo.pobierzWpisy();
+        List<Wpis> wpisy;
+
+        if (wybranaKategoria == null) {
+            wpisy = repo.pobierzWpisy();
+        } else {
+            wpisy = repo.pobierzWpisyDlaKategorii(wybranaKategoria);
+        }
 
         for (Wpis wpis : wpisy) {
             wpisyObservable.add(new WpisWidok(wpis));
