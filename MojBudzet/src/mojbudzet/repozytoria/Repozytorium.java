@@ -16,6 +16,38 @@ import org.hibernate.Transaction;
 
 public class Repozytorium {
 
+    public Kategoria pobierzKategorie(int id) {
+
+        Kategoria result = null;
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+
+            Query query = session.createQuery("select k from "
+                    + Kategoria.class.getName()
+                    + " w where k.id = :id");
+
+            query.setInteger("id", id);
+
+            query.setMaxResults(1);
+            
+            result = (Kategoria) query.uniqueResult();           
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+
+        return result;
+    }
+    
     public List<Kategoria> pobierzKategorie() {
 
         List<Kategoria> result = new ArrayList<>();
@@ -81,6 +113,38 @@ public class Repozytorium {
         }
     }
 
+    public int edytujKategorie(Kategoria kategoria) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        int id = 0;
+
+        try {
+            tx = session.beginTransaction();
+            
+            Query query = session.createQuery("select k from "
+                    + Kategoria.class.getName()
+                    + " k where k.id = :id");
+
+            query.setInteger("id", kategoria.getId());
+
+            query.setMaxResults(1);
+            
+            Kategoria result = (Kategoria) query.uniqueResult();
+            
+            result.setNazwa(kategoria.getNazwa());            
+            
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        return id;
+    }
+    
     public int dodajKategorie(Kategoria kategoria) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -116,7 +180,9 @@ public class Repozytorium {
 
             query.setInteger("id", id);
 
-            result = (Wpis) query.list().get(0);
+            query.setMaxResults(1);
+            
+            result = (Wpis) query.uniqueResult();           
 
             tx.commit();
         } catch (Exception e) {
@@ -278,6 +344,41 @@ public class Repozytorium {
         return id;
     }
 
+    public int edytujWpis(Wpis wpis) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        int id = 0;
+
+        try {
+            tx = session.beginTransaction();
+            
+            Query query = session.createQuery("select w from "
+                    + Wpis.class.getName()
+                    + " w where w.id = :id");
+
+            query.setInteger("id", wpis.getId());
+
+            query.setMaxResults(1);
+            
+            Wpis result = (Wpis) query.uniqueResult();
+            
+            result.setData(wpis.getData());
+            result.setTyp(wpis.getTyp());
+            result.setKategoria(wpis.getKategoria());
+            result.setWartosc(wpis.getWartosc());
+            
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            session.close();
+        }
+        return id;
+    }
+    
     public void usunWpis(int id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

@@ -33,9 +33,6 @@ public class App extends Application {
             Platform.exit();
             System.exit(0);
         });
-
-        // List<Wpis> lista = sprawdzDlaKategorii();
-        // List<Wpis> lista = sprawdzDlaTypu();
         
         int x = 0;
     }

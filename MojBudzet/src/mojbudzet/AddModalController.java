@@ -43,9 +43,11 @@ public class AddModalController implements Initializable {
 
     private Stage dialogStage;
 
-    public Wpis wpis;
+    private Wpis wpisDoEdycji;    
+    
+    private Wpis wpisDoZapisu;        
 
-    public List<Kategoria> kategorie;
+    private List<Kategoria> kategorie;
 
     @FXML
     private void onSaveBtnClicked() {
@@ -62,16 +64,16 @@ public class AddModalController implements Initializable {
             wartoscField.setText(Double.toString(wartosc));
             return;
         }
-        wpis.setWartosc(wartosc);
+        wpisDoEdycji.setWartosc(wartosc);
 
         RadioButton rbIn = (RadioButton) toggleGroup.getSelectedToggle();
 
         switch (rbIn.getId()) {
             case "rbWydatek":
-                wpis.setTyp((byte) -1);
+                wpisDoEdycji.setTyp((byte) -1);
                 break;
             case "rbPrzychod":
-                wpis.setTyp((byte) 1);
+                wpisDoEdycji.setTyp((byte) 1);
                 break;
         }
 
@@ -83,7 +85,7 @@ public class AddModalController implements Initializable {
             date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         }
 
-        wpis.setData(date);
+        wpisDoEdycji.setData(date);
 
         Kategoria kategoria = (Kategoria) kategoriaBox.getValue();
 
@@ -91,8 +93,10 @@ public class AddModalController implements Initializable {
             return;
         }
 
-        wpis.setKategoria(kategoria);
+        wpisDoEdycji.setKategoria(kategoria);
 
+        wpisDoZapisu = wpisDoEdycji;
+        
         dialogStage.close();
     }
 
@@ -100,8 +104,8 @@ public class AddModalController implements Initializable {
         this.dialogStage = dialogStage;
     }
 
-    public void setWpis(Wpis wpis) {
-        this.wpis = wpis;
+    public void setWpisDoEdycji(Wpis wpis) {
+        this.wpisDoEdycji = wpis;
 
         wartoscField.setText(Double.toString(wpis.getWartosc()));
 
@@ -115,7 +119,7 @@ public class AddModalController implements Initializable {
             rbWydatek.setSelected(true);
         } else {
             rbPrzychod.setSelected(true);
-        }
+        }       
         
         kategoriaBox.setValue(wpis.getKategoria());
     }
@@ -132,8 +136,11 @@ public class AddModalController implements Initializable {
         kategoriaBox.setItems(kategorieStr);
     }
 
+    public Wpis getWpisDoZapisu(){
+        return wpisDoZapisu;
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
-
 }

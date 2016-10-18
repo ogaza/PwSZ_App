@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="419.0" prefWidth="548.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mojbudzet.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="379.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mojbudzet.FXMLDocumentController">
     <children>
-        <Button fx:id="addBtn" 
-                layoutX="14.0" 
-                layoutY="14.0" 
-                onAction="#onAddBtnClicked" 
-                prefHeight="17.0" 
-                prefWidth="69.0" text="Dodaj" />
-        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-        <TableView id="table" fx:id="table" 
-                   layoutX="13.0" layoutY="59.0" prefHeight="348.0" prefWidth="522.0">
+        <Button fx:id="addBtn" layoutX="174.0" layoutY="14.0" onAction="#onAddBtnClicked" prefHeight="17.0" prefWidth="69.0" text="Dodaj" />
+        <TableView id="table" fx:id="table" layoutX="174.0" layoutY="57.0" prefHeight="305.0" prefWidth="488.0">
             <columns>
                 <TableColumn prefWidth="100.0" text="Typ" />
                 <TableColumn prefWidth="100.0" text="Wartość" />
@@ -24,12 +17,11 @@
                 <TableColumn prefWidth="150.0" text="Kategoria" />
             </columns>
         </TableView>
-        <Button fx:id="editBtn" 
-                layoutX="92.0" layoutY="14.0" 
-                onAction="#onEditBtnClicked" 
-                prefHeight="17.0" prefWidth="69.0" text="Edytuj" />
-        <Button fx:id="deleteBtn" layoutX="171.0" layoutY="14.0" 
-                onAction="#onDeleteBtnClicked" 
-                prefHeight="17.0" prefWidth="69.0" text="Usuń" />
+        <Button fx:id="editBtn" layoutX="251.0" layoutY="14.0" onAction="#onEditBtnClicked" prefHeight="17.0" prefWidth="69.0" text="Edytuj" />
+        <Button fx:id="deleteBtn" layoutX="328.0" layoutY="14.0" onAction="#onDeleteBtnClicked" prefHeight="17.0" prefWidth="69.0" text="Usuń" />
+      <ListView fx:id="listaKategorii" layoutX="30.0" layoutY="57.0" prefHeight="305.0" prefWidth="133.0" />
+      <Button layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#onAddKategoriaBtnClicked" prefHeight="25.0" prefWidth="31.0" text="+" />
+      <Button layoutX="92.0" layoutY="27.0" mnemonicParsing="false" onAction="#onDeleteKategoriaBtnClicked" prefHeight="25.0" prefWidth="31.0" text="-" />
+      <Button layoutX="61.0" layoutY="27.0" mnemonicParsing="false" onAction="#onEditKategoriaBtnClicked" prefHeight="25.0" prefWidth="31.0" text="/" />
     </children>
 </AnchorPane>

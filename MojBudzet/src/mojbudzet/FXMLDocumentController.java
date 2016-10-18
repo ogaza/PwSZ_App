@@ -22,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -37,6 +38,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableView table;
 
+    @FXML
+    private ListView listaKategorii;
+
     private final Repozytorium repo = new Repozytorium();
 
     List<Kategoria> kategorie;
@@ -47,44 +51,104 @@ public class FXMLDocumentController implements Initializable {
         Wpis wpis = showWpisEditDialog(
                 new Wpis((byte) -1, 0.0, new Date(), null), event);
 
-        repo.dodajWpis(wpis);
-
-        refreshGrid();
+        if (wpis != null) {
+            repo.dodajWpis(wpis);
+            refreshGrid();
+        }
     }
 
     @FXML
     private void onEditBtnClicked(ActionEvent event) {
-        
-        WpisWidok wybranyWpis = (WpisWidok)table.
+
+        WpisWidok wybranyWpis = (WpisWidok) table.
                 getSelectionModel().getSelectedItem();
-        
-        if (wybranyWpis != null) {
-            
-            Wpis wpis = repo.pobierzWpis(wybranyWpis.getId());
-            
-            wpis = showWpisEditDialog(wpis, event);
-            
-            repo.dodajWpis(wpis);
-            
-            refreshGrid();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano wpisu do edycji");
+
+        if (wybranyWpis == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano wpisu");
             alert.showAndWait();
+            return;
+        }
+
+        Wpis wpis = repo.pobierzWpis(wybranyWpis.getId());
+
+        wpis = showWpisEditDialog(wpis, event);
+
+        if (wpis != null) {
+            repo.edytujWpis(wpis);
+            refreshGrid();
         }
     }
 
     @FXML
     private void onDeleteBtnClicked() {
-        WpisWidok wybranyWpis = (WpisWidok)table.
+
+        WpisWidok wybranyWpis = (WpisWidok) table.
                 getSelectionModel().getSelectedItem();
-                
+
+        if (wybranyWpis == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano wpisu");
+            alert.showAndWait();
+            return;
+        }
+
         repo.usunWpis(wybranyWpis.getId());
         refreshGrid();
+    }
+
+    @FXML
+    private void onAddKategoriaBtnClicked(ActionEvent event) {
+        Kategoria kategoria = showKategoriaEditDialog(
+                new Kategoria(), event);
+
+        if (kategoria != null) {
+            repo.dodajKategorie(kategoria);
+            pobierzKategorie();
+            wypelnijListeKategorii();
+        }
+    }
+
+    @FXML
+    private void onEditKategoriaBtnClicked(ActionEvent event) {
+        Kategoria wybranaKategoria = (Kategoria) listaKategorii.
+                getSelectionModel().getSelectedItem();
+
+        if (wybranaKategoria == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano kategorii");
+            alert.showAndWait();
+            return;
+        }
+
+        Kategoria kategoria = repo.pobierzKategorie(wybranaKategoria.getId());
+
+        kategoria = showKategoriaEditDialog(kategoria, event);
+
+        if (kategoria != null) {
+            repo.edytujKategorie(wybranaKategoria);
+            pobierzKategorie();
+            wypelnijListeKategorii();
+        }
+    }
+
+    @FXML
+    private void onDeleteKategoriaBtnClicked() {
+        Kategoria wybranaKategoria = (Kategoria) listaKategorii.
+                getSelectionModel().getSelectedItem();
+
+        if (wybranaKategoria == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano kategorii");
+            alert.showAndWait();
+            return;
+        }
+
+        repo.usunKategorie(wybranaKategoria.getId());
+        pobierzKategorie();
+        wypelnijListeKategorii();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         pobierzKategorie();
+        wypelnijListeKategorii();
         przygotujKolumny();
         refreshGrid();
     }
@@ -118,6 +182,16 @@ public class FXMLDocumentController implements Initializable {
         kategorie = repo.pobierzKategorie();
     }
 
+    private void wypelnijListeKategorii() {
+        ObservableList<Kategoria> kategorieStr = FXCollections.observableArrayList();
+
+        for (Kategoria kategoria : kategorie) {
+            kategorieStr.add(kategoria);
+        }
+
+        listaKategorii.setItems(kategorieStr);
+    }
+
     public Wpis showWpisEditDialog(Wpis wpis, ActionEvent event) {
 
         try {
@@ -136,12 +210,43 @@ public class FXMLDocumentController implements Initializable {
             controller.setDialogStage(dialogStage);
 
             controller.setKategorie(kategorie);
-            controller.setWpis(wpis);
+            controller.setWpisDoEdycji(wpis);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 
-            return controller.wpis;
+            return controller.getWpisDoZapisu();
+
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public Kategoria showKategoriaEditDialog(Kategoria kategoria, ActionEvent event) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("addKategoria.fxml"));
+
+            Parent root = (Parent) loader.load();
+
+            Stage dialogStage = new Stage();
+
+            dialogStage.setTitle("Wprowady dane");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            dialogStage.setScene(new Scene(root));
+
+            AddKategoriaController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            controller.setKategoriaDoEdycji(kategoria);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.getKategoriaDoZapisu();
+
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
